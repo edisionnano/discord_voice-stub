@@ -162,8 +162,8 @@ function getSupportedVideoCodecs(codecCallback) {
 
 //Called rarely by Discord with an array of the regions and their IPs to rank regions by latency and then cached. If we don't implement this it prints its not supported and retries next time
 function rankRtcRegions(regionsIps, rankRtcRegionsCallback) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' rankRtcRegions was called with a callback and regionIps: ' + logObject(regionIps) + '\n');
-  Nodule.signalVideoOutputSinkReady(regionIps, rankRtcRegionsCallback);
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' rankRtcRegions was called with a callback and regionsIps: ' + logObject(regionsIps) + '\n');
+  Nodule.signalVideoOutputSinkReady(regionsIps, rankRtcRegionsCallback);
   return;
 }
 
