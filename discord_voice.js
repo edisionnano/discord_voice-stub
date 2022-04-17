@@ -13,37 +13,18 @@ function logObject(object) {
   return JSON.stringify(object, (k, v) => (v === undefined) ? '__undefined' : v, 2).replace(/"__undefined"/g, 'undefined');
 }
 
+//What do we want to do when the connection is too slow?
+DegradationPreference = {
+  MAINTAIN_RESOLUTION: 0,
+  MAINTAIN_FRAMERATE: 1,
+  BALANCED: 2,
+  DISABLED: 3
+};
+
 //The entry point of the module
 function initialize(options) {
   fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' initialize was called with options:\n' + logObject(options) + '\n');
   Nodule.initialize(options);
-  return;
-}
-
-function setImageDataAllocator(allocator) {
-  fs.writeFileSync(logLocation, new Date().toLocaleTimeString() + ' setImageDataAllocator was called with allocator:\n' + allocator + '\n');
-  Nodule.setImageDataAllocator(allocator);
-  return;
-}
-
-function VoiceConnection(userId, connectionOptions, onConnectCallback) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection was called with\nuserId:' + userId + '\nconnectionOptions:' + logObject(connectionOptions) + '\nonConnectCallback: Callback\n');
-  this.userId = userId;
-  this.connectionOptions = connectionOptions;
-  this.onConnectCallback = onConnectCallback;
-  instance = new Nodule.VoiceConnection(userId, connectionOptions, onConnectCallback);
-  return(instance);
-}
-
-function setDeviceChangeCallback(deviceCallback) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setDeviceChangeCallback was called and provided with a callback\n');
-  Nodule.setDeviceChangeCallback(deviceCallback);
-  return;
-}
-
-//This function is stubbed on the blob, thus we stub it too
-function setVolumeChangeCallback(callback) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setVolumeChangeCallback was called and provided with a callback\n');
   return;
 }
 
@@ -53,31 +34,42 @@ function setOnVoiceCallback(voiceCallback) {
   return;
 }
 
+//Called upon entering and leaving Voice & Video settings. enabled is true while you are there and false when you leave, playback is true when you click Let's Check and options are noise reduction options
+function setEmitVADLevel(enabled, playback, options) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setEmitVADLevel was called with' + '\nenabled:' + enabled + ' \nplayback:' + playback + ' \noptions:' + logObject(options) + '\n');
+  Nodule.setEmitVADLevel(enabled, playback, options);
+  return;
+}
+
 function setTransportOptions(options) {
   fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setTransportOptions was called with options:\n' + logObject(options) + '\n');
   Nodule.setTransportOptions(options);
   return;
 }
 
-//The two functions bellow are used in the voice settings to set the user's microphone and speaker volume
-function setInputVolume(volume) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setInputVolume was called with volume: ' + volume + '\n');
-  Nodule.setInputVolume(volume);
+function setDeviceChangeCallback(deviceCallback) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setDeviceChangeCallback was called and provided with a callback\n');
+  Nodule.setDeviceChangeCallback(deviceCallback);
   return;
 }
 
-function setOutputVolume(volume) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setOutputVolume was called with volume: ' + volume + '\n');
-  Nodule.setOutputVolume(volume);
+//If the Linux capabilities are declared supported, we need these two functions bellow
+function setOutputDevice(device) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setOutputDevice was called with device name: ' + device + '\n');
+  Nodule.setOutputDevice(device);
   return;
 }
 
-//The above stubs are the bare minimum in order to be able to load the page, don't forget to also block sentry.io on your hosts file
+function setInputDevice(device) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setInputDevice was called with device name: ' + device + '\n');
+  Nodule.setInputDevice(device);
+  return;
+}
 
-//Called upon entering and leaving Voice & Video settings. enabled is true while you are there and false when you leave, playback is true when you click Let's Check and options are noise reduction options
-function setEmitVADLevel(enabled, playback, options) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setEmitVADLevel was called with' + '\nenabled:' + enabled + ' \nplayback:' + playback + ' \noptions:' + logObject(options) + '\n');
-  Nodule.setEmitVADLevel(enabled, playback, options);
+//Set the webcam V4L device
+function setVideoInputDevice(device) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setVideoInputDevice was called with device name: ' + device + '\n');
+  Nodule.setVideoInputDevice(device);
   return;
 }
 
@@ -106,19 +98,6 @@ function setVideoOutputSink(streamIdentifier, onFrame, waitForReadySignal) {
   return;
 }
 
-//If the Linux capabilities are declared supported, we need these two functions bellow
-function setInputDevice(device) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setInputDevice was called with device name: ' + device + '\n');
-  Nodule.setInputDevice(device);
-  return;
-}
-
-function setOutputDevice(device) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setOutputDevice was called with device name: ' + device + '\n');
-  Nodule.setOutputDevice(device);
-  return;
-}
-
 //These two are needed when testing camera after we declare the Linux caps as supported
 function addDirectVideoOutputSink(streamIdentifier) {
   fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' addDirectVideoOutputSink was called with streamIdentifier: ' + streamIdentifier + '\n');
@@ -132,17 +111,34 @@ function removeDirectVideoOutputSink(streamIdentifier) {
   return;
 }
 
-//What do we want to do when the connection is too slow?
-DegradationPreference = {
-  MAINTAIN_RESOLUTION: 0,
-  MAINTAIN_FRAMERATE: 1,
-  BALANCED: 2,
-  DISABLED: 3
-};
+function signalVideoOutputSinkReady(streamIdentifier) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' signalVideoOutputSinkReady was called with streamIdentifier: ' + streamIdentifier + '\n');
+  Nodule.signalVideoOutputSinkReady(streamIdentifier);
+  return;
+}
 
-function getSupportedVideoCodecs(codecCallback) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' getSupportedVideoCodecs was called and provided with a callback\n');
-  Nodule.getSupportedVideoCodecs(codecCallback)
+function setImageDataAllocator(allocator) {
+  fs.writeFileSync(logLocation, new Date().toLocaleTimeString() + ' setImageDataAllocator was called with allocator:\n' + allocator + '\n');
+  Nodule.setImageDataAllocator(allocator);
+  return;
+}
+
+//The two functions bellow are used in the voice settings to set the user's microphone and speaker volume
+function setInputVolume(volume) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setInputVolume was called with volume: ' + volume + '\n');
+  Nodule.setInputVolume(volume);
+  return;
+}
+
+function setOutputVolume(volume) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setOutputVolume was called with volume: ' + volume + '\n');
+  Nodule.setOutputVolume(volume);
+  return;
+}
+
+//This function is stubbed on the blob, thus we stub it too
+function setVolumeChangeCallback(callback) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setVolumeChangeCallback was called and provided with a callback\n');
   return;
 }
 
@@ -158,15 +154,9 @@ function setNoInputCallback(noInputCallback) {
   return;
 }
 
-function setVideoInputDevice(device) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setVideoInputDevice was called with device name: ' + device + '\n');
-  Nodule.setVideoInputDevice(device);
-  return;
-}
-
-function signalVideoOutputSinkReady(streamIdentifier) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' signalVideoOutputSinkReady was called with streamIdentifier: ' + streamIdentifier + '\n');
-  Nodule.signalVideoOutputSinkReady(streamIdentifier);
+function getSupportedVideoCodecs(codecCallback) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' getSupportedVideoCodecs was called and provided with a callback\n');
+  Nodule.getSupportedVideoCodecs(codecCallback)
   return;
 }
 
@@ -177,29 +167,38 @@ function rankRtcRegions(regionsIps, rankRtcRegionsCallback) {
   return;
 }
 
+function VoiceConnection(userId, connectionOptions, onConnectCallback) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection was called with\nuserId:' + userId + '\nconnectionOptions:' + logObject(connectionOptions) + '\nonConnectCallback: Callback\n');
+  this.userId = userId;
+  this.connectionOptions = connectionOptions;
+  this.onConnectCallback = onConnectCallback;
+  instance = new Nodule.VoiceConnection(userId, connectionOptions, onConnectCallback);
+  return(instance);
+}
+
 //We export the functions so Discord can call them
+exports.DegradationPreference = DegradationPreference;
 exports.initialize = initialize;
-exports.setImageDataAllocator = setImageDataAllocator;
-exports.VoiceConnection = VoiceConnection;
-exports.setDeviceChangeCallback = setDeviceChangeCallback;
-exports.setVolumeChangeCallback = setVolumeChangeCallback;
 exports.setOnVoiceCallback = setOnVoiceCallback;
-exports.setTransportOptions = setTransportOptions;
-exports.setInputVolume = setInputVolume;
-exports.setOutputVolume = setOutputVolume;
 exports.setEmitVADLevel = setEmitVADLevel;
-exports.getInputDevices = getInputDevices;
+exports.setTransportOptions = setTransportOptions;
+exports.setDeviceChangeCallback = setDeviceChangeCallback;
+exports.setOutputDevice = setOutputDevice;
+exports.setInputDevice = setInputDevice;
+exports.setVideoInputDevice = setVideoInputDevice;
 exports.getOutputDevices = getOutputDevices;
+exports.getInputDevices = getInputDevices;
 exports.getVideoInputDevices = getVideoInputDevices;
 exports.setVideoOutputSink = setVideoOutputSink;
-exports.setInputDevice = setInputDevice;
-exports.setOutputDevice = setOutputDevice;
 exports.addDirectVideoOutputSink = addDirectVideoOutputSink;
 exports.removeDirectVideoOutputSink = removeDirectVideoOutputSink;
-exports.DegradationPreference = DegradationPreference;
-exports.getSupportedVideoCodecs = getSupportedVideoCodecs;
+exports.signalVideoOutputSinkReady = signalVideoOutputSinkReady;
+exports.setImageDataAllocator = setImageDataAllocator;
+exports.setInputVolume = setInputVolume;
+exports.setOutputVolume = setOutputVolume;
+exports.setVolumeChangeCallback = setVolumeChangeCallback;
 exports.setNoInputThreshold = setNoInputThreshold;
 exports.setNoInputCallback = setNoInputCallback;
-exports.setVideoInputDevice = setVideoInputDevice;
-exports.signalVideoOutputSinkReady = signalVideoOutputSinkReady;
+exports.getSupportedVideoCodecs = getSupportedVideoCodecs;
 exports.rankRtcRegions = rankRtcRegions;
+exports.VoiceConnection = VoiceConnection;
