@@ -167,14 +167,49 @@ function rankRtcRegions(regionsIps, rankRtcRegionsCallback) {
   return;
 }
 
-function VoiceConnection(userId, connectionOptions, onConnectCallback) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection was called with\nuserId:' + userId + '\nconnectionOptions:' + logObject(connectionOptions) + '\nonConnectCallback: Callback\n');
-  this.userId = userId;
-  this.connectionOptions = connectionOptions;
-  this.onConnectCallback = onConnectCallback;
-  instance = new Nodule.VoiceConnection(userId, connectionOptions, onConnectCallback);
-  return(instance);
-}
+class VoiceConnection{
+  constructor(userId, connectionOptions, onConnectCallback) {
+      fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection was called with\nuserId:' + userId + '\nconnectionOptions:' + logObject(connectionOptions) + '\nonConnectCallback: Callback\n');
+  }
+
+  setDesktopSourceStatusCallback(statusCallback) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setDesktopSourceStatusCallback was called and provided with a callback\n');
+  }
+
+  setTransportOptions(options) {
+     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setTransportOptions was called with options:\n' + logObject(options) + '\n');
+  }
+
+  setSelfMute(muted) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setSelfMute was called with muted: ' + muted + '\n');
+  }
+
+  setSelfDeafen(deafened) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setSelfDeafen was called with deafened: ' + deafened + '\n');
+  }
+
+  setLocalMute(userId, muted) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setLocalMute was called with userId: ' + userId + '\nmuted: ' + muted + '\n');
+  }
+
+  //Seems to be a mostly pointless call since even with a stub it still destroys the call just fine
+  destroy() {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.destroy was called\n');
+  }
+
+  //Seems to be a mostly pointless call since even with a stub it still destroys the screenshare just fine
+  clearDesktopSource() {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.clearDesktopSource was called\n');
+  }
+
+  getFilteredStats(filter, statsCallback) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.getFilteredStats was called with filter: ' + filter + '\nstatsCallback: Callback\n');
+  }
+
+  setVideoBroadcast(broadcasting) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setVideoBroadcast was called with broadcasting: ' + broadcasting + '\n');
+  }
+ }
 
 //We export the functions so Discord can call them
 exports.DegradationPreference = DegradationPreference;
