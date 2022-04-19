@@ -168,28 +168,13 @@ function rankRtcRegions(regionsIps, rankRtcRegionsCallback) {
 }
 
 class VoiceConnection{
+  //Seems to be a mostly pointless call since even with a stub it still destroys the screenshare just fine
+  clearDesktopSource() {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.clearDesktopSource was called\n');
+  }
+
   constructor(userId, connectionOptions, onConnectCallback) {
-      fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection was called with\nuserId:' + userId + '\nconnectionOptions:' + logObject(connectionOptions) + '\nonConnectCallback: Callback\n');
-  }
-
-  setDesktopSourceStatusCallback(statusCallback) {
-    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setDesktopSourceStatusCallback was called and provided with a callback\n');
-  }
-
-  setTransportOptions(options) {
-     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setTransportOptions was called with options:\n' + logObject(options) + '\n');
-  }
-
-  setSelfMute(muted) {
-    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setSelfMute was called with muted: ' + muted + '\n');
-  }
-
-  setSelfDeafen(deafened) {
-    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setSelfDeafen was called with deafened: ' + deafened + '\n');
-  }
-
-  setLocalMute(userId, muted) {
-    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setLocalMute was called with userId: ' + userId + '\nmuted: ' + muted + '\n');
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection was called with\nuserId:' + userId + '\nconnectionOptions:' + logObject(connectionOptions) + '\nonConnectCallback: Callback\n');
   }
 
   //Seems to be a mostly pointless call since even with a stub it still destroys the call just fine
@@ -197,13 +182,32 @@ class VoiceConnection{
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.destroy was called\n');
   }
 
-  //Seems to be a mostly pointless call since even with a stub it still destroys the screenshare just fine
-  clearDesktopSource() {
-    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.clearDesktopSource was called\n');
-  }
-
   getFilteredStats(filter, statsCallback) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.getFilteredStats was called with filter: ' + filter + '\nstatsCallback: Callback\n');
+  }
+
+  setDesktopSourceStatusCallback(statusCallback) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setDesktopSourceStatusCallback was called and provided with a callback\n');
+  }
+
+  setDesktopSourceWithOptions(options) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setDesktopSourceWithOptions was called with options:\n' + logObject(options) + '\n');
+  }
+
+  setLocalMute(userId, muted) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setLocalMute was called with userId: ' + userId + '\nmuted: ' + muted + '\n');
+  }
+
+  setSelfDeafen(deafened) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setSelfDeafen was called with deafened: ' + deafened + '\n');
+  }
+
+  setSelfMute(muted) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setSelfMute was called with muted: ' + muted + '\n');
+  }
+
+  setTransportOptions(options) {
+     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setTransportOptions was called with options:\n' + logObject(options) + '\n');
   }
 
   setVideoBroadcast(broadcasting) {
