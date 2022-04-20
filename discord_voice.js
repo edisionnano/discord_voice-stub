@@ -219,6 +219,12 @@ class VoiceConnection{
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setLocalMute was called with userId: ' + userId + '\nmuted: ' + muted + '\n');
   }
 
+  setLocalVolume(userId, volume){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setLocalVolume was called with userId: ' + userId + '\nvolume: ' + volume + '\n');
+    setLocalVolume: (userId, volume) => instance.setLocalVolume(userId, volume)
+    instance.setLocalVolume(userId, volume);
+  }
+
   setOnDesktopSourceEnded(onEnded){
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnDesktopSourceEnded was called and provided with a callback\n');
     setOnDesktopSourceEnded: (callback) => instance.setOnDesktopSourceEnded(callback)
@@ -260,7 +266,7 @@ class VoiceConnection{
     setOnVideoCallback: (callback) => instance.setOnVideoCallback(callback)
     instance.setOnVideoCallback(onVideo);
   }
-  
+
   //Needed when we enable push to talk and we press the keybind
   setPTTActive(active, priority){
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setPTTActive was called with active: ' + active + '\npriority: ' + priority + '\n')
