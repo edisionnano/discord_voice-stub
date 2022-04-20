@@ -183,8 +183,8 @@ class VoiceConnection{
   //Seems to be a mostly pointless call since even with a stub it still destroys the call just fine. If we don't stub it we get an error.
   destroy() {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.destroy was called\n');
-    //destroy: () => instance.destroy()
-    //instance.destroy();
+    destroy: () => instance.destroy()
+    instance.destroy();
   }
   
   getEncryptionModes(onModes) {
