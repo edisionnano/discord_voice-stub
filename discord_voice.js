@@ -7,6 +7,8 @@ const Nodule = require('./discord_voice.node');
 //Full path to the log file
 const logLocation = "/tmp/log";
 
+var instance;
+
 //This function takes JSON objects and pretty-prints them
 function logObject(object) {
   //The JSON spec doesn't allow for undefined values but JSON.stringify allows us to do operations as its second argument so we rename it to __undefined and then back to undefined
@@ -175,19 +177,38 @@ class VoiceConnection{
 
   constructor(userId, connectionOptions, onConnectCallback) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection was called with\nuserId:' + userId + '\nconnectionOptions:' + logObject(connectionOptions) + '\nonConnectCallback: Callback\n');
+    instance = new Nodule.VoiceConnection(userId, connectionOptions, onConnectCallback);
   }
 
-  //Seems to be a mostly pointless call since even with a stub it still destroys the call just fine
+  //Seems to be a mostly pointless call since even with a stub it still destroys the call just fine. If we don't stub it we get an error.
   destroy() {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.destroy was called\n');
+    //destroy: () => instance.destroy()
+    //instance.destroy();
+  }
+  
+  getEncryptionModes(onModes) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.getEncryptionModes was called and provided with a callback\n');
+    getEncryptionModes: (callback) => instance.getEncryptionModes(callback)
+    instance.getEncryptionModes(onModes);
   }
 
   getFilteredStats(filter, statsCallback) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.getFilteredStats was called with filter: ' + filter + '\nstatsCallback: Callback\n');
+    getFilteredStats: (filter, callback) => instance.getFilteredStats(filter, callback)
+    instance.getFilteredStats(filter, statsCallback);
+  }
+
+  mergeUsers(users) {
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.mergeUsers was called with users: ' + users + '\n');
+    mergeUsers: (users) => instance.mergeUsers(users)
+    instance.mergeUsers(users);
   }
 
   setDesktopSourceStatusCallback(statusCallback) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setDesktopSourceStatusCallback was called and provided with a callback\n');
+    setDesktopSourceStatusCallback: (callback) => instance.setDesktopSourceStatusCallback(callback)
+    instance.setDesktopSourceStatusCallback(statusCallback);
   }
 
   setDesktopSourceWithOptions(options) {
@@ -198,16 +219,89 @@ class VoiceConnection{
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setLocalMute was called with userId: ' + userId + '\nmuted: ' + muted + '\n');
   }
 
+  setOnDesktopSourceEnded(onEnded){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnDesktopSourceEnded was called and provided with a callback\n');
+    setOnDesktopSourceEnded: (callback) => instance.setOnDesktopSourceEnded(callback)
+    instance.setOnDesktopSourceEnded(onEnded);
+  }
+
+  setOnSoundshare(onSoundshare){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnSoundshare was called and provided with a callback\n');
+    setOnSoundshare: (callback) => instance.setOnSoundshare(callback)
+    instance.setOnSoundshare(onSoundshare);
+  }
+
+  setOnSoundshareEnded(onSoundshareEnded){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnSoundshareEnded was called and provided with a callback\n');
+    setOnSoundshareEnded: (callback) => instance.setOnSoundshareEnded(callback)
+    instance.setOnSoundshareEnded(onSoundshareEnded);
+  }
+
+  setOnSoundshareFailed(onSoundshareFailed){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnSoundshareFailed was called and provided with a callback\n');
+    setOnSoundshareFailed: (callback) => instance.setOnSoundshareFailed(callback)
+    instance.setOnSoundshareFailed(onSoundshareFailed);
+  }
+
+  setOnSpeakingCallback(onSpeaking){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnSpeakingCallback was called and provided with a callback\n');
+    setOnSpeakingCallback: (callback) => instance.setOnSpeakingCallback(callback)
+    instance.setOnSpeakingCallback(onSpeaking);
+  }
+
+  setOnSpeakingWhileMutedCallback(onSpeakingWhileMuted){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnSpeakingWhileMutedCallback was called and provided with a callback\n');
+    setOnSpeakingWhileMutedCallback: (callback) => instance.setOnSpeakingWhileMutedCallback(callback)
+    instance.setOnSpeakingWhileMutedCallback(onSpeakingWhileMuted);
+  }
+
+  setOnVideoCallback(onVideo){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnVideoCallback was called and provided with a callback\n');
+    setOnVideoCallback: (callback) => instance.setOnVideoCallback(callback)
+    instance.setOnVideoCallback(onVideo);
+  }
+  
+  //Needed when we enable push to talk and we press the keybind
+  setPTTActive(active, priority){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setPTTActive was called with active: ' + active + '\npriority: ' + priority + '\n')
+    setPTTActive: (active, priority) => instance.setPTTActive(active, priority)
+    instance.setPTTActive(active, priority);
+  }
+
+  setPingCallback(onPing){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setPingCallback was called and provided with a callback\n');
+    setPingCallback: (callback) => instance.setPingCallback(callback)
+    instance.setPingCallback(onPing);
+  }
+
+  setPingInterval(interval){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setPingInterval was called with interval:' + interval + '\n');
+    setPingInterval: (interval) => instance.setPingInterval(interval)
+    instance.setPingInterval(interval);
+  }
+
+  setPingTimeoutCallback(onPingTimeout){
+    fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setPingTimeoutCallback was called and provided with a callback\n');
+    setPingTimeoutCallback: (callback) => instance.setPingTimeoutCallback(callback)
+    instance.setPingTimeoutCallback(onPingTimeout);
+  }
+
   setSelfDeafen(deafened) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setSelfDeafen was called with deafened: ' + deafened + '\n');
+    setSelfDeafen: (deaf) => instance.setSelfDeafen(deaf)
+    instance.setSelfDeafen(deafened);
   }
 
   setSelfMute(muted) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setSelfMute was called with muted: ' + muted + '\n');
+    setSelfMute: (mute) => instance.setSelfMute(mute)
+    instance.setSelfMute(muted);
   }
 
   setTransportOptions(options) {
      fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setTransportOptions was called with options:\n' + logObject(options) + '\n');
+     setTransportOptions: (options) => instance.setTransportOptions(options)
+     instance.setTransportOptions(options);
   }
 
   setVideoBroadcast(broadcasting) {
