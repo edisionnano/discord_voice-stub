@@ -183,8 +183,8 @@ class VoiceConnection{
   //Seems to be a mostly pointless call since even with a stub it still destroys the call just fine. If we don't stub it we get an error.
   destroy() {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.destroy was called\n');
-    destroy: () => instance.destroy()
-    instance.destroy();
+    //destroy: () => instance.destroy()
+    //instance.destroy();
   }
   
   getEncryptionModes(onModes) {
@@ -213,10 +213,14 @@ class VoiceConnection{
 
   setDesktopSourceWithOptions(options) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setDesktopSourceWithOptions was called with options:\n' + logObject(options) + '\n');
+    setDesktopSourceWithOptions: (options) => instance.setDesktopSourceWithOptions(options)
+    instance.setDesktopSourceWithOptions(options);
   }
 
   setLocalMute(userId, muted) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setLocalMute was called with userId: ' + userId + '\nmuted: ' + muted + '\n');
+    setLocalMute: (userId, mute) => instance.setLocalMute(userId, mute)
+    instance.setLocalMute(userId, muted);
   }
 
   setLocalVolume(userId, volume){
@@ -312,6 +316,8 @@ class VoiceConnection{
 
   setVideoBroadcast(broadcasting) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setVideoBroadcast was called with broadcasting: ' + broadcasting + '\n');
+    setVideoBroadcast: (broadcasting) => instance.setVideoBroadcast(broadcasting)
+    instance.setVideoBroadcast(broadcasting);
   }
  }
 
