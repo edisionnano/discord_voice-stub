@@ -162,6 +162,13 @@ function getSupportedVideoCodecs(codecCallback) {
   return;
 }
 
+//Needed if we declare mediapipe as supported. It will be slow since it's not implemented in the Linux blob and the preview will make the log huge cause it's raw image data
+function applyMediaFilterSettings(filters) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + 'applyMediaFilterSettings was called with filters:\n' + logObject(filters) + '\n');
+  //Nodule.applyMediaFilterSettings(filters);
+  return;
+}
+
 //Called rarely by Discord with an array of the regions and their IPs to rank regions by latency and then cached. If we don't implement this it prints its not supported and retries next time
 function rankRtcRegions(regionsIps, rankRtcRegionsCallback) {
   fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' rankRtcRegions was called with a callback and regionsIps:\n' + logObject(regionsIps) + '\n');
@@ -346,4 +353,5 @@ exports.setNoInputThreshold = setNoInputThreshold;
 exports.setNoInputCallback = setNoInputCallback;
 exports.getSupportedVideoCodecs = getSupportedVideoCodecs;
 exports.rankRtcRegions = rankRtcRegions;
+exports.applyMediaFilterSettings = applyMediaFilterSettings;
 exports.VoiceConnection = VoiceConnection;
