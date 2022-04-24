@@ -6,3 +6,4 @@ Find index.js and replace discord_voice.node on the first line with discord_voic
 
 ## Status
 I've only implemented functions that I've seen called on electron's console. If you are on stable Discord, ctrl+shift+i won't work without modifications like BetterDiscord, thus ptb or canary is recommended. If you find Discord calling a function not implemented, open an issue. Find the latest status of implemented functions broken down [here](https://docs.google.com/spreadsheets/d/e/2PACX-1vSjSwT1s1Ll7FhGkJeB8wAKuqUBBbcyEq9QJIlVGep791uZXhd4Px7J2NYrta3X_68A_87iSDSUIAhC/pubhtml#).
+<br>If you want to learn more about the callbacks provided to each function, read more [here](https://docs.google.com/document/d/e/2PACX-1vTYXzRu66mf7HXU7WyCwgMLeE90h5ys8Wu8WsvgI0OTkpp5G-mA5TkIHxcTS4YfLWo2yw-kBKTb0g-h/pub).
