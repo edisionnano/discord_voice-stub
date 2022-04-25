@@ -182,6 +182,13 @@ function getWindowPreviews(width, height, previewsCallback) {
   return;
 }
 
+//Used by Discord to send the VoiceEngine whatever it prints to the browser's console
+function consoleLog(level, json) {
+  //fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' consoleLog was called with level: ' + level + '\njson: ' + json + '\n');
+  Nodule.consoleLog(level, json)
+  return;
+}
+
 //Called rarely by Discord with an array of the regions and their IPs to rank regions by latency and then cached. If we don't implement this it prints its not supported and retries next time
 function rankRtcRegions(regionsIps, rankRtcRegionsCallback) {
   fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' rankRtcRegions was called with a callback and regionsIps:\n' + logObject(regionsIps) + '\n');
@@ -243,74 +250,74 @@ class VoiceConnection{
     instance.setLocalMute(userId, muted);
   }
 
-  setLocalVolume(userId, volume){
+  setLocalVolume(userId, volume) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setLocalVolume was called with userId: ' + userId + '\nvolume: ' + volume + '\n');
     setLocalVolume: (userId, volume) => instance.setLocalVolume(userId, volume)
     instance.setLocalVolume(userId, volume);
   }
 
-  setOnDesktopSourceEnded(onEnded){
+  setOnDesktopSourceEnded(onEnded) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnDesktopSourceEnded was called and provided with a callback\n');
     setOnDesktopSourceEnded: (callback) => instance.setOnDesktopSourceEnded(callback)
     instance.setOnDesktopSourceEnded(onEnded);
   }
 
-  setOnSoundshare(onSoundshare){
+  setOnSoundshare(onSoundshare) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnSoundshare was called and provided with a callback\n');
     setOnSoundshare: (callback) => instance.setOnSoundshare(callback)
     instance.setOnSoundshare(onSoundshare);
   }
 
-  setOnSoundshareEnded(onSoundshareEnded){
+  setOnSoundshareEnded(onSoundshareEnded) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnSoundshareEnded was called and provided with a callback\n');
     setOnSoundshareEnded: (callback) => instance.setOnSoundshareEnded(callback)
     instance.setOnSoundshareEnded(onSoundshareEnded);
   }
 
-  setOnSoundshareFailed(onSoundshareFailed){
+  setOnSoundshareFailed(onSoundshareFailed) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnSoundshareFailed was called and provided with a callback\n');
     setOnSoundshareFailed: (callback) => instance.setOnSoundshareFailed(callback)
     instance.setOnSoundshareFailed(onSoundshareFailed);
   }
 
-  setOnSpeakingCallback(onSpeaking){
+  setOnSpeakingCallback(onSpeaking) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnSpeakingCallback was called and provided with a callback\n');
     setOnSpeakingCallback: (callback) => instance.setOnSpeakingCallback(callback)
     instance.setOnSpeakingCallback(onSpeaking);
   }
 
-  setOnSpeakingWhileMutedCallback(onSpeakingWhileMuted){
+  setOnSpeakingWhileMutedCallback(onSpeakingWhileMuted) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnSpeakingWhileMutedCallback was called and provided with a callback\n');
     setOnSpeakingWhileMutedCallback: (callback) => instance.setOnSpeakingWhileMutedCallback(callback)
     instance.setOnSpeakingWhileMutedCallback(onSpeakingWhileMuted);
   }
 
-  setOnVideoCallback(onVideo){
+  setOnVideoCallback(onVideo) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setOnVideoCallback was called and provided with a callback\n');
     setOnVideoCallback: (callback) => instance.setOnVideoCallback(callback)
     instance.setOnVideoCallback(onVideo);
   }
 
   //Needed when we enable push to talk and we press the keybind
-  setPTTActive(active, priority){
+  setPTTActive(active, priority) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setPTTActive was called with active: ' + active + '\npriority: ' + priority + '\n')
     setPTTActive: (active, priority) => instance.setPTTActive(active, priority)
     instance.setPTTActive(active, priority);
   }
 
-  setPingCallback(onPing){
+  setPingCallback(onPing) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setPingCallback was called and provided with a callback\n');
     setPingCallback: (callback) => instance.setPingCallback(callback)
     instance.setPingCallback(onPing);
   }
 
-  setPingInterval(interval){
+  setPingInterval(interval) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setPingInterval was called with interval:' + interval + '\n');
     setPingInterval: (interval) => instance.setPingInterval(interval)
     instance.setPingInterval(interval);
   }
 
-  setPingTimeoutCallback(onPingTimeout){
+  setPingTimeoutCallback(onPingTimeout) {
     fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' VoiceConnection.setPingTimeoutCallback was called and provided with a callback\n');
     setPingTimeoutCallback: (callback) => instance.setPingTimeoutCallback(callback)
     instance.setPingTimeoutCallback(onPingTimeout);
@@ -367,6 +374,7 @@ exports.setNoInputCallback = setNoInputCallback;
 exports.getSupportedVideoCodecs = getSupportedVideoCodecs;
 exports.getScreenPreviews = getScreenPreviews;
 exports.getWindowPreviews = getWindowPreviews;
+exports.consoleLog = consoleLog;
 exports.rankRtcRegions = rankRtcRegions;
 exports.applyMediaFilterSettings = applyMediaFilterSettings;
 exports.VoiceConnection = VoiceConnection;
