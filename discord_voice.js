@@ -93,7 +93,7 @@ function getVideoInputDevices(deviceCallback) {
   return;
 }
 
-//Needed when testing webcam
+//Needed when testing webcam and direct_video isn't declared as supported
 function setVideoOutputSink(streamIdentifier, onFrame, waitForReadySignal) {
   fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setVideoOutputSink was called with' + '\nstreamIdentifier:' + streamIdentifier + ' \nonFrame:' + onFrame + ' \nwaitForReadySignal:' + waitForReadySignal + '\n');
   Nodule.setVideoOutputSink(streamIdentifier, onFrame, waitForReadySignal);
