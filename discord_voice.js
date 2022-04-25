@@ -169,15 +169,15 @@ function applyMediaFilterSettings(filters) {
   return;
 }
 
-//These two are only implemented in Windows by the blob for screen and window previews when the screen_previews and window_previews are declared as supported
+//These two are only implemented in Windows by the blob for screen and window previews when the screen_previews and window_previews features are declared as supported
 function getScreenPreviews(width, height, previewsCallback) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' getScreenPreviews was called with width: ' + width + '\nheight: ' + height + '\npreviewsCallback: ' + previewsCallback + '\n');
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' getScreenPreviews was called with width: ' + width + '\nheight: ' + height + '\npreviewsCallback: callback\n');
   //Nodule.getScreenPreviews(width, height, previewsCallback);
   return;
 }
 
 function getWindowPreviews(width, height, previewsCallback) {
-  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' getWindowPreviews was called with width: ' + width + '\nheight: ' + height + '\npreviewsCallback: ' + previewsCallback + '\n');
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' getWindowPreviews was called with width: ' + width + '\nheight: ' + height + '\npreviewsCallback: callback\n');
   //Nodule.getWindowPreviews(width, height, previewsCallback);
   return;
 }
