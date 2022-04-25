@@ -169,6 +169,19 @@ function applyMediaFilterSettings(filters) {
   return;
 }
 
+//These two are only implemented in Windows by the blob for screen and window previews when the screen_previews and window_previews are declared as supported
+function getScreenPreviews(width, height, previewsCallback) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' getScreenPreviews was called with width: ' + width + '\nheight: ' + height + '\npreviewsCallback: ' + previewsCallback + '\n');
+  //Nodule.getScreenPreviews(width, height, previewsCallback);
+  return;
+}
+
+function getWindowPreviews(width, height, previewsCallback) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' getWindowPreviews was called with width: ' + width + '\nheight: ' + height + '\npreviewsCallback: ' + previewsCallback + '\n');
+  //Nodule.getWindowPreviews(width, height, previewsCallback);
+  return;
+}
+
 //Called rarely by Discord with an array of the regions and their IPs to rank regions by latency and then cached. If we don't implement this it prints its not supported and retries next time
 function rankRtcRegions(regionsIps, rankRtcRegionsCallback) {
   fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' rankRtcRegions was called with a callback and regionsIps:\n' + logObject(regionsIps) + '\n');
@@ -352,6 +365,8 @@ exports.setVolumeChangeCallback = setVolumeChangeCallback;
 exports.setNoInputThreshold = setNoInputThreshold;
 exports.setNoInputCallback = setNoInputCallback;
 exports.getSupportedVideoCodecs = getSupportedVideoCodecs;
+exports.getScreenPreviews = getScreenPreviews;
+exports.getWindowPreviews = getWindowPreviews;
 exports.rankRtcRegions = rankRtcRegions;
 exports.applyMediaFilterSettings = applyMediaFilterSettings;
 exports.VoiceConnection = VoiceConnection;
