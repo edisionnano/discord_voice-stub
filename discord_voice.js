@@ -189,6 +189,13 @@ function consoleLog(level, json) {
   return;
 }
 
+//Diagnostic Audio Recording
+function setAecDump(enable) {
+  fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' setAecDump was called with enable: ' + enable + '\n');
+  Nodule.setAecDump(enable);
+  return;
+}
+
 //Called rarely by Discord with an array of the regions and their IPs to rank regions by latency and then cached. If we don't implement this it prints its not supported and retries next time
 function rankRtcRegions(regionsIps, rankRtcRegionsCallback) {
   fs.appendFileSync(logLocation, '\n' + new Date().toLocaleTimeString() + ' rankRtcRegions was called with a callback and regionsIps:\n' + logObject(regionsIps) + '\n');
@@ -375,6 +382,7 @@ exports.getSupportedVideoCodecs = getSupportedVideoCodecs;
 exports.getScreenPreviews = getScreenPreviews;
 exports.getWindowPreviews = getWindowPreviews;
 exports.consoleLog = consoleLog;
+exports.setAecDump = setAecDump;
 exports.rankRtcRegions = rankRtcRegions;
 exports.applyMediaFilterSettings = applyMediaFilterSettings;
 exports.VoiceConnection = VoiceConnection;
